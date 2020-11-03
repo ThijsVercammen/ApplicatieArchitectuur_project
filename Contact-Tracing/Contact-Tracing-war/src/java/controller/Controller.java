@@ -6,11 +6,15 @@
 package controller;
 
 import java.io.IOException;
+import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Arts;
+import model.Burger;
+import session_beans.Db_beanLocal;
 
 /**
  *
@@ -27,15 +31,42 @@ public class Controller extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @EJB private Db_beanLocal db;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
         String action = request.getParameter("submit");
         
         if(action.equals("Meld aan")){
-        
-        } else if(action.equals("Registreer")){
-        
+            String rol = request.getParameter("rol");
+            if(rol.equals("burger")){
+                String naam = request.getParameter("gebruikersnaam");
+                Burger b = db.getBurger(naam);
+                if(b != null ){
+                    String wachtwoord = request.getParameter("wachtwoord");
+                    if(db.checkWachtwoord(b, wachtwoord)){
+                        request.getSession().setAttribute("burger", b);
+                        gotoPage("gebruiker_overview.jsp", request, response);
+                    }
+                }
+            } else if(rol.equals("arts")){
+                String naam = request.getParameter("gebruikersnaam");
+                Arts a = db.getArts(naam);
+                if(a != null ){
+                    String wachtwoord = request.getParameter("wachtwoord");
+                    if(db.checkWachtwoord(a, wachtwoord)){
+                        request.getSession().setAttribute("arts", a);
+                    }
+                }
+            }
+            request.setAttribute("error", "Uw ingegeven gegevens zijn niet correct!");
+            gotoPage("index.jsp", request, response);
+        } else if(action.equals("nieuw_contact")){
+            gotoPage("nieuw_contact.jsp", request, response);
+        }else if(action.equals("test_aanvragen")){
+            gotoPage("test_aanvragen.jsp", request, response);
         }
         
     }

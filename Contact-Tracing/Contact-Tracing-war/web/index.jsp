@@ -15,8 +15,8 @@
         <h1>Contact-Tracing Covid-19</h1>
         <h2>Gelieve u hieronder aan te melden voor u verder gaat.</h2>
         <form action="Controller" method="POST">
-            <label for="gebruiker">Ik wil inloggen als: </label>
-            <select id="gebruiker" name="gebruiker">
+            <label for="rol">Ik wil inloggen als: </label>
+            <select id="rol" name="rol">
                 <option value="burger">Burger</option>
                 <option value="arts">Arts</option>
             </select>
@@ -27,8 +27,7 @@
             <label for="wachtwoord">Wachtwoord </label>
             <input type="password" id="wachtwoord" name="wachtwoord">
             <br>
-            <input type="submit" value="Registreer">
-            <input type="submit" value="Meld aan">
+            <input type="submit" name="submit" value="Meld aan">
         </form>
     </body>
 </html>
