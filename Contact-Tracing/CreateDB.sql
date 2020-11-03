@@ -10,30 +10,57 @@
 
 drop table Test purge;
 drop table Contacten purge;
-drop table Gebruiker purge;
+drop table Arts purge;
+drop table Burger purge;
+drop table Status purge;
 
-create table Gebruiker (
-    gebruikernr int,
+create table Status (
+    statusnr int,
+    naam varchar(255),
+    PRIMARY KEY(statusnr)
+);
+
+create table Burger (
+    burgernr int,
     naam varchar(255),
     wachtwoord varchar(255),
-    risicostatus varchar(255),
-    PRIMARY KEY(gebruikernr)
+    risicostatus int,
+    PRIMARY KEY(burgernr),
+    FOREIGN KEY (risicostatus) REFERENCES Status(statusnr)
+);
+
+create table Arts (
+    artsnr int,
+    naam varchar(255),
+    wachtwoord varchar(255),
+    PRIMARY KEY(artsnr)
 );
 
 create table Contacten (
     contactnr int,
-    gebruikernr int,
+    burgernr int,
     contact int,
     soort_contact varchar(255),
     PRIMARY KEY(contactnr),
-    FOREIGN KEY(gebruikernr) REFERENCES Gebruiker(gebruikernr),
-    FOREIGN KEY(contact) REFERENCES Gebruiker(gebruikernr)
+    FOREIGN KEY(burgernr) REFERENCES Burger(burgernr),
+    FOREIGN KEY(contact) REFERENCES Burger(burgernr)
 );
 
 create table Test (
     testnr int,
     gebruiker int,
-    status varchar(255),
+    status int,
     PRIMARY KEY(testnr),
-    FOREIGN KEY(gebruiker) REFERENCES Gebruiker(gebruikernr)
+    FOREIGN KEY(gebruiker) REFERENCES Burger(burgernr),
+    FOREIGN KEY(status) REFERENCES Status(statusnr)
 );
+
+insert into Status values (1, 'In uitvoering');
+insert into Status values (2, 'Positief');
+insert into Status values (3, 'Negatief');
+
+insert into Burger values (1, 'John Doe', 'admin', 3);
+insert into Burger values (2, 'Arno Goyvaerts', 'admin', 3);
+insert into Burger values (3, 'Thijs Vercammen', 'admin', 3);
+
+insert into Arts values (1, 'Herman Crauwels', 'admin');
