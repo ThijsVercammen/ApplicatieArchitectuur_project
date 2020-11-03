@@ -8,16 +8,16 @@
  * Created: 3-nov-2020
  */
 
-drop table Gebruiker purge;
-drop table Contacten purge;
 drop table Test purge;
+drop table Contacten purge;
+drop table Gebruiker purge;
 
 create table Gebruiker (
     gebruikernr int,
     naam varchar(255),
     wachtwoord varchar(255),
     risicostatus varchar(255),
-    PRIMARY KEY(knr)
+    PRIMARY KEY(gebruikernr)
 );
 
 create table Contacten (
@@ -27,7 +27,7 @@ create table Contacten (
     soort_contact varchar(255),
     PRIMARY KEY(contactnr),
     FOREIGN KEY(gebruikernr) REFERENCES Gebruiker(gebruikernr),
-    FOREIGN KEY(contact) REFERENCES Gebruiker(gebruikernr),
+    FOREIGN KEY(contact) REFERENCES Gebruiker(gebruikernr)
 );
 
 create table Test (
