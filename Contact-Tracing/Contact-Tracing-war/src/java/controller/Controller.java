@@ -39,30 +39,10 @@ public class Controller extends HttpServlet {
         
         String action = request.getParameter("submit");
         
-        if(action.equals("Meld aan")){
-            String rol = request.getParameter("rol");
-            if(rol.equals("burger")){
-                String naam = request.getParameter("gebruikersnaam");
-                Burger b = db.getBurger(naam);
-                if(b != null ){
-                    String wachtwoord = request.getParameter("wachtwoord");
-                    if(db.checkWachtwoord(b, wachtwoord)){
-                        request.getSession().setAttribute("burger", b);
-                        gotoPage("gebruiker_overview.jsp", request, response);
-                    }
-                }
-            } else if(rol.equals("arts")){
-                String naam = request.getParameter("gebruikersnaam");
-                Arts a = db.getArts(naam);
-                if(a != null ){
-                    String wachtwoord = request.getParameter("wachtwoord");
-                    if(db.checkWachtwoord(a, wachtwoord)){
-                        request.getSession().setAttribute("arts", a);
-                    }
-                }
-            }
-            request.setAttribute("error", "Uw ingegeven gegevens zijn niet correct!");
-            gotoPage("index.jsp", request, response);
+        if(action.equals("Burger")){
+            response.sendRedirect("burger/gebruiker_overview.jsp");
+        } else if(action.equals("Arts")){
+            response.sendRedirect("arts/arts_overview.jsp");
         } else if(action.equals("nieuw_contact")){
             gotoPage("nieuw_contact.jsp", request, response);
         }else if(action.equals("test_aanvragen")){

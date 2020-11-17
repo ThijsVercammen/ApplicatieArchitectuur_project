@@ -13,6 +13,8 @@ drop table Contacten purge;
 drop table Arts purge;
 drop table Burger purge;
 drop table Status purge;
+drop table groepen purge;
+drop table gebruikers purge;
 
 create table Status (
     statusnr int,
@@ -64,3 +66,27 @@ insert into Burger values (2, 'Arno Goyvaerts', 'admin', 3);
 insert into Burger values (3, 'Thijs Vercammen', 'admin', 3);
 
 insert into Arts values (1, 'Herman Crauwels', 'admin');
+
+-- SECURITY
+create table gebruikers (
+    gebruikersnaam varchar(20) primary key,
+    paswoord varchar(20) 
+);
+
+create table groepen (
+    gebruikersnaam varchar(20) references gebruikers primary key,
+    groep varchar2(20)
+);
+
+insert into gebruikers values ('John Doe', 'admin');
+insert into gebruikers values ('1111', '2222');
+insert into gebruikers values ('Arno Goyvaerts', 'admin');
+insert into gebruikers values ('Thijs Vercammen', 'admin');
+
+insert into gebruikers values ('Herman Crauwels', 'admin');
+
+insert into groepen values ('John Doe', 'Burger' );
+insert into groepen values ('1111', 'Burger' );
+insert into groepen values ('Arno Goyvaerts', 'Burger' );
+insert into groepen values ('Thijs Vercammen', 'Burger' );
+insert into groepen values ('Herman Crauwels', 'Arts' );

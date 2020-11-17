@@ -13,4 +13,44 @@
             30
         </session-timeout>
     </session-config>
+    <security-constraint>
+        <display-name>Arts</display-name>
+        <web-resource-collection>
+            <web-resource-name>Arts</web-resource-name>
+            <description>/arts/*</description>
+            <url-pattern>/arts/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>Arts</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>Burger</display-name>
+        <web-resource-collection>
+            <web-resource-name>Burger</web-resource-name>
+            <description/>
+            <url-pattern>/burger/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>Burger</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>CoronaTracing-Realm</realm-name>
+        <form-login-config>
+            <form-login-page>/login.jsp</form-login-page>
+            <form-error-page>/loginError.jsp</form-error-page>
+        </form-login-config>
+    </login-config>
+    <security-role>
+        <description/>
+        <role-name>Arts</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>Burger</role-name>
+    </security-role>
 </web-app>

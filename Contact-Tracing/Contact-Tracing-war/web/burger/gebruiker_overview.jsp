@@ -18,13 +18,14 @@
         <title>Overview</title>
     </head>
     <body>
-        <h1>Goedendag ${sessionScope.burger.naam}</h1>
+        <h1>Burger Overview</h1>
+        <!--h1>Goedendag ${sessionScope.burger.naam}</h1>
         <h2>Menu: </h2>
         <ul>
             <li><a href="${nieuw_contact}">nieuw contact</a></li>
             <li><a href="${test_aanvragen}">niewe test aanvragen</a></li>
         </ul>
         <h2>Besmettings risico</h2>
-        <p>uw huidig besmettingsrisico is: ${sessionScope.burger.risicostatus.naam}</p>
+        <p>uw huidig besmettingsrisico is: ${sessionScope.burger.risicostatus.naam}</p-->
     </body>
 </html>
