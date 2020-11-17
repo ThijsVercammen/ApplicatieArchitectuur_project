@@ -6,7 +6,11 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import javax.ejb.EJB;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -38,15 +42,16 @@ public class Controller extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         String action = request.getParameter("submit");
-        
         if(action.equals("Burger")){
             response.sendRedirect("burger/gebruiker_overview.jsp");
         } else if(action.equals("Arts")){
             response.sendRedirect("arts/arts_overview.jsp");
-        } else if(action.equals("nieuw_contact")){
-            gotoPage("nieuw_contact.jsp", request, response);
-        }else if(action.equals("test_aanvragen")){
-            gotoPage("test_aanvragen.jsp", request, response);
+        } else if(action.equals("nieuw contact")){
+            String username = request.getRemoteUser();
+            System.out.println(username + "\n");
+            gotoPage("burger/nieuw_contact.jsp", request, response);
+        }else if(action.equals("niewe test")){
+            gotoPage("burger/test_aanvragen.jsp", request, response);
         }
         
     }

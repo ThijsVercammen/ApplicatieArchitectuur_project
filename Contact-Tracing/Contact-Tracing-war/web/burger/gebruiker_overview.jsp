@@ -12,20 +12,21 @@
         <c:url var="nieuw_contact" value="Controller" scope="session">
             <c:param name="submit" value="nieuw_contact"/>
         </c:url>
-        <c:url var="test_aanvragen" value="Controller" scope="session">
+        <c:url var="test_aanvragen" value="/Controller" scope="session">
             <c:param name="submit" value="test_aanvragen"/>
         </c:url>
         <title>Overview</title>
     </head>
     <body>
         <h1>Burger Overview</h1>
-        <!--h1>Goedendag ${sessionScope.burger.naam}</h1>
+        <!--h1>Goedendag ${sessionScope.burger.naam}</h1-->
         <h2>Menu: </h2>
-        <ul>
-            <li><a href="${nieuw_contact}">nieuw contact</a></li>
-            <li><a href="${test_aanvragen}">niewe test aanvragen</a></li>
-        </ul>
+        <form action="/Contact-Tracing-war/Controller" method="POST">
+            <input type="submit" name="submit" value="nieuw contact">
+            <br>
+            <input type="submit" name="submit" value="niewe test">
+        </form>
         <h2>Besmettings risico</h2>
-        <p>uw huidig besmettingsrisico is: ${sessionScope.burger.risicostatus.naam}</p-->
+        <!--p>uw huidig besmettingsrisico is: ${sessionScope.burger.risicostatus.naam}</p-->
     </body>
 </html>
