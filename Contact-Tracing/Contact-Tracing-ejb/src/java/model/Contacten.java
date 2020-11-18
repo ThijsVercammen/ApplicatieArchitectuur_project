@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Contacten.findAll", query = "SELECT c FROM Contacten c")
     , @NamedQuery(name = "Contacten.findByContactnr", query = "SELECT c FROM Contacten c WHERE c.contactnr = :contactnr")
+    , @NamedQuery(name = "Contacten.findByBurger", query = "SELECT c FROM Contacten c WHERE c.burgernr = :burgernr")
     , @NamedQuery(name = "Contacten.findBySoortContact", query = "SELECT c FROM Contacten c WHERE c.soortContact = :soortContact")})
 public class Contacten implements Serializable {
 

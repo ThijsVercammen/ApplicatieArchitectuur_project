@@ -19,6 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 import model.Arts;
 import model.Burger;
 import session_beans.Db_beanLocal;
+import java.util.List;
+import model.Contacten;
+import model.Status;
+import model.Test;
 
 /**
  *
@@ -48,10 +52,38 @@ public class Controller extends HttpServlet {
             response.sendRedirect("arts/arts_overview.jsp");
         } else if(action.equals("nieuw contact")){
             String username = request.getRemoteUser();
-            System.out.println(username + "\n");
+            request.getSession().setAttribute("burgers", db.getAllBurgers(username));
             gotoPage("burger/nieuw_contact.jsp", request, response);
         }else if(action.equals("niewe test")){
+            String username = request.getRemoteUser();
+            Test t = db.getTest(username);
+            if(t != null){
+                request.getSession().setAttribute("testStatus", t.getStatus().getNaam());
+                request.getSession().setAttribute("test", t);
+            } else {
+                request.setAttribute("testStatus", "Nog geen test uitgevoerd");
+            }
             gotoPage("burger/test_aanvragen.jsp", request, response);
+        } else if(action.equals("Voeg contact toe")){
+            String username = request.getRemoteUser();
+            String contact = request.getParameter("contact");
+            String soort = request.getParameter("soort_contact");
+            db.addContact(username, contact, soort);
+            gotoPage("burger/gebruiker_overview.jsp", request, response);
+        }else if(action.equals("Huidig risico")){
+            String username = request.getRemoteUser();
+            request.getSession().setAttribute("con", db.getContacten(username));
+            request.getSession().setAttribute("risico", db.getRisicoStatus(username));
+            gotoPage("burger/risico.jsp", request, response);
+        }else if(action.equals("Test Aanvragen")){
+            String username = request.getRemoteUser();
+            Test t = db.getTest(username);
+            if(t == null){
+                t = new Test();
+            }                
+            t.setStatus(db.getStatus("In uitvoering"));
+            db.updateTest(t, username);
+            gotoPage("burger/gebruiker_overview.jsp", request, response);
         }
         
     }

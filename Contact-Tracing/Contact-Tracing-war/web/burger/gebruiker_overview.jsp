@@ -19,12 +19,14 @@
     </head>
     <body>
         <h1>Burger Overview</h1>
-        <!--h1>Goedendag ${sessionScope.burger.naam}</h1-->
+        <h1>Goedendag ${remoteUser}</h1>
         <h2>Menu: </h2>
         <form action="/Contact-Tracing-war/Controller" method="POST">
             <input type="submit" name="submit" value="nieuw contact">
             <br>
             <input type="submit" name="submit" value="niewe test">
+            <br>
+            <input type="submit" name="submit" value="Huidig risico">
         </form>
         <h2>Besmettings risico</h2>
         <!--p>uw huidig besmettingsrisico is: ${sessionScope.burger.risicostatus.naam}</p-->
