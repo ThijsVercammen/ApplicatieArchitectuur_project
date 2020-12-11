@@ -9,12 +9,6 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <c:url var="nieuw_contact" value="Controller" scope="session">
-            <c:param name="submit" value="nieuw_contact"/>
-        </c:url>
-        <c:url var="test_aanvragen" value="/Controller" scope="session">
-            <c:param name="submit" value="test_aanvragen"/>
-        </c:url>
         <title>Overview</title>
     </head>
     <body>

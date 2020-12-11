@@ -15,7 +15,7 @@
     <body>
         <h1>Test Status</h1>
         <h2>Huidige Status van de test: ${testStatus}</h2>
-        
+
         <c:choose>
             <c:when test="${testStatus == 'In uitvoering'}">
                 <p>Test ID: ${sessionScope.test.testnr}</p>
@@ -26,5 +26,8 @@
                 </form>
             </c:otherwise>
         </c:choose>
+        <form action="/Contact-Tracing-war/Controller" method="POST">
+            <input type="submit" name="submit" value="Overzicht">
+        </form>
     </body>
 </html>

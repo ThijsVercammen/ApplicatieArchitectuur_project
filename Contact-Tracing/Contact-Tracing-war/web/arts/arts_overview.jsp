@@ -13,5 +13,18 @@
     </head>
     <body>
         <h1>Hello World!</h1>
+
+        <form method="POST" action="/Contact-Tracing-war/Controller">
+            <label>Test ID:</label>
+            <input name="test_id" type="number">
+            <br>
+            <label>Status :</label>
+            <select name="status">
+                <option value="Positief">Positief</option>
+                <option value="Negatief">Negatief</option>
+            </select>
+            <br>
+            <input type="submit" name="submit" value="Voeg test Toe">
+        </form>
     </body>
 </html>

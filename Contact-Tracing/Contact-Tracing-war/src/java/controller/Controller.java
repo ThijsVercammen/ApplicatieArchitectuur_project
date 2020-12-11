@@ -6,22 +6,13 @@
 package controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
 import javax.ejb.EJB;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Arts;
-import model.Burger;
 import session_beans.Db_beanLocal;
-import java.util.List;
-import model.Contacten;
-import model.Status;
 import model.Test;
 
 /**
@@ -39,53 +30,70 @@ public class Controller extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @EJB private Db_beanLocal db;
-    
+    @EJB
+    private Db_beanLocal db;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         String action = request.getParameter("submit");
-        if(action.equals("Burger")){
+        if (action.equals("Burger")) {
+            String username = request.getRemoteUser();
+            System.out.println("---------------- " + username + "\n");
             response.sendRedirect("burger/gebruiker_overview.jsp");
-        } else if(action.equals("Arts")){
+        } else if (action.equals("Arts")) {
             response.sendRedirect("arts/arts_overview.jsp");
-        } else if(action.equals("nieuw contact")){
+        } else if (action.equals("nieuw contact")) {
             String username = request.getRemoteUser();
             request.getSession().setAttribute("burgers", db.getAllBurgers(username));
             gotoPage("burger/nieuw_contact.jsp", request, response);
-        }else if(action.equals("niewe test")){
+        } else if (action.equals("niewe test")) {
             String username = request.getRemoteUser();
             Test t = db.getTest(username);
-            if(t != null){
+            if (t != null) {
                 request.getSession().setAttribute("testStatus", t.getStatus().getNaam());
                 request.getSession().setAttribute("test", t);
             } else {
                 request.setAttribute("testStatus", "Nog geen test uitgevoerd");
             }
             gotoPage("burger/test_aanvragen.jsp", request, response);
-        } else if(action.equals("Voeg contact toe")){
+        } else if (action.equals("Voeg contact toe")) {
             String username = request.getRemoteUser();
             String contact = request.getParameter("contact");
             String soort = request.getParameter("soort_contact");
             db.addContact(username, contact, soort);
             gotoPage("burger/gebruiker_overview.jsp", request, response);
-        }else if(action.equals("Huidig risico")){
+        } else if (action.equals("Huidig risico")) {
             String username = request.getRemoteUser();
-            request.getSession().setAttribute("con", db.getContacten(username));
+            request.getSession().setAttribute("nauw", db.getNauweContacten(username));
+            request.getSession().setAttribute("gewoon", db.getGewoneContacten(username));
+            request.getSession().setAttribute("veilig", db.getVeiligeContacten(username));
+            request.getSession().setAttribute("aantnauw", db.getNauweContacten(username).size());
+            request.getSession().setAttribute("aantgewoon", db.getGewoneContacten(username).size());
+            request.getSession().setAttribute("aantveilig", db.getVeiligeContacten(username).size());
             request.getSession().setAttribute("risico", db.getRisicoStatus(username));
             gotoPage("burger/risico.jsp", request, response);
-        }else if(action.equals("Test Aanvragen")){
+        } else if (action.equals("Test Aanvragen")) {
             String username = request.getRemoteUser();
             Test t = db.getTest(username);
-            if(t == null){
+            if (t == null) {
                 t = new Test();
-            }                
+            }
             t.setStatus(db.getStatus("In uitvoering"));
             db.updateTest(t, username);
             gotoPage("burger/gebruiker_overview.jsp", request, response);
+        } else if (action.equals("Overzicht")) {
+            response.sendRedirect("burger/gebruiker_overview.jsp");
+        } else if (action.equals("Voeg test toe")) {
+            String test_id = request.getParameter("test_id");
+            String status = request.getParameter("status");
+            request.setAttribute("test_id", test_id);
+            request.setAttribute("burger", db.getTestByID(test_id).getGebruiker().getNaam());
+            request.setAttribute("status", status);
+            gotoPage("arts/status_confirmation.jsp", request, response);
         }
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -127,7 +135,7 @@ public class Controller extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    protected void gotoPage(String page,HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    protected void gotoPage(String page, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher view = request.getRequestDispatcher(page);
         view.forward(request, response);
     }

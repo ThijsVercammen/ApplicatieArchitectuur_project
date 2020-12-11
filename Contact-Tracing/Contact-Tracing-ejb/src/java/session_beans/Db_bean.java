@@ -25,8 +25,6 @@ public class Db_bean implements Db_beanLocal {
 
     @PersistenceContext
     private EntityManager em;
-    private int contactnr = 1;
-    private int testnr = 1;
 
     @Override
     public Burger getBurger(String naam) {
@@ -48,10 +46,12 @@ public class Db_bean implements Db_beanLocal {
         Contacten c = new Contacten();
         c.setBurgernr(getBurger(burger));
         c.setContact(getBurger(contact));
+        int contactnr = getMaxContactNummer().intValue();
+        contactnr++;
         c.setContactnr(new BigDecimal(contactnr));
         c.setSoortContact(type);
         em.persist(c);
-        contactnr++;
+        //contactnr++;
     }
 
     @Override
@@ -61,12 +61,10 @@ public class Db_bean implements Db_beanLocal {
 
     @Override
     public String getRisicoStatus(String burger) {
-        List<Contacten> l = getContacten(burger);
+        List<Contacten> l = getNauweContacten(burger);
         for(int i = 0; i< l.size(); i++){
-            if((l.get(i).getSoortContact().equals("Nauw ontact")) ||(l.get(i).getSoortContact().equals("Gewoon ontact"))){
-                if(l.get(i).getContact().getRisicostatus().getNaam().equals("Positief")){
-                    return "ROOD";
-                }
+            if(l.get(i).getContact().getRisicostatus().getNaam().equals("Positief")){
+                return "ROOD";
             }
         }
         return "GROEN";
@@ -89,11 +87,52 @@ public class Db_bean implements Db_beanLocal {
     public void updateTest(Test t, String burger) {
         if(t.getGebruiker() == null){
             t.setGebruiker(getBurger(burger));
+            int testnr = getMaxTestNummer().intValue();
+            testnr++;
             t.setTestnr(new BigDecimal(testnr));
         } else {
             em.remove(t);
             em.flush();
         }
         em.persist(t);
+    }
+
+    @Override
+    public BigDecimal getMaxContactNummer() {
+       return (BigDecimal) em.createQuery("SELECT max(c.contactnr) FROM Contacten c").getSingleResult();
+    }
+
+    @Override
+    public BigDecimal getMaxTestNummer() {
+        return (BigDecimal) em.createQuery("SELECT max(testnr) FROM Test t").getSingleResult();
+    }
+
+    @Override
+    public List<Contacten> getNauweContacten(String burger) {
+        return em.createQuery("SELECT c FROM Contacten c WHERE c.burgernr = ?1 and c.soortContact = ?2")
+                .setParameter(1, getBurger(burger))
+                .setParameter(2, "Nauw contact")
+                .getResultList();
+    }
+
+    @Override
+    public List<Contacten> getGewoneContacten(String burger) {
+                return em.createQuery("SELECT c FROM Contacten c WHERE c.burgernr = ?1 and c.soortContact = ?2")
+                .setParameter(1, getBurger(burger))
+                .setParameter(2, "Gewoon contact")
+                .getResultList();
+    }
+
+    @Override
+    public List<Contacten> getVeiligeContacten(String burger) {
+                return em.createQuery("SELECT c FROM Contacten c WHERE c.burgernr = ?1 and c.soortContact = ?2")
+                .setParameter(1, getBurger(burger))
+                .setParameter(2, "Veilig contact")
+                .getResultList();
+    }
+
+    @Override
+    public Test getTestByID(String id) {
+         return (Test) em.createNamedQuery("Test.findByTestnr").setParameter("testnr", new BigDecimal(id)).getSingleResult();
     }
 }

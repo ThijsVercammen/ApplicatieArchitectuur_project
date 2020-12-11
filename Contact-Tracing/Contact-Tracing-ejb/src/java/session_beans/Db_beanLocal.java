@@ -5,6 +5,7 @@
  */
 package session_beans;
 
+import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Local;
 import model.Arts;
@@ -29,5 +30,10 @@ public interface Db_beanLocal {
     public Status getStatus(String status);
     public Test getTest(String burger);
     public void updateTest(Test t, String burger);
-    
+    public BigDecimal getMaxContactNummer();
+    public BigDecimal getMaxTestNummer();
+    public List<Contacten> getNauweContacten(String burger);
+    public List<Contacten> getGewoneContacten(String burger);
+    public List<Contacten> getVeiligeContacten(String burger);
+    public Test getTestByID(String id);
 }
