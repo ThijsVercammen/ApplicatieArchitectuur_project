@@ -44,13 +44,23 @@ public class Db_bean implements Db_beanLocal {
     @Override
     public void addContact(String burger, String contact, String type) {
         Contacten c = new Contacten();
+        Contacten c2 = new Contacten();
         c.setBurgernr(getBurger(burger));
         c.setContact(getBurger(contact));
-        int contactnr = getMaxContactNummer().intValue();
-        contactnr++;
+        int contactnr = 1;
+        if(getMaxContactNummer() != null) {
+            contactnr = getMaxContactNummer().intValue();
+            contactnr++;
+        }
         c.setContactnr(new BigDecimal(contactnr));
         c.setSoortContact(type);
+        contactnr++;
+        c2.setBurgernr(getBurger(contact));
+        c2.setContact(getBurger(burger));
+        c2.setContactnr(new BigDecimal(contactnr));
+        c2.setSoortContact(type);
         em.persist(c);
+        em.persist(c2);
         //contactnr++;
     }
 
@@ -61,11 +71,8 @@ public class Db_bean implements Db_beanLocal {
 
     @Override
     public String getRisicoStatus(String burger) {
-        List<Contacten> l = getNauweContacten(burger);
-        for(int i = 0; i< l.size(); i++){
-            if(l.get(i).getContact().getRisicostatus().getNaam().equals("Positief")){
+        if(getBurger(burger).getRisicostatus().getNaam().equals("Positief")){
                 return "ROOD";
-            }
         }
         return "GROEN";
     }
@@ -87,11 +94,18 @@ public class Db_bean implements Db_beanLocal {
     public void updateTest(Test t, String burger) {
         if(t.getGebruiker() == null){
             t.setGebruiker(getBurger(burger));
-            int testnr = getMaxTestNummer().intValue();
-            testnr++;
+            int testnr = 1;
+            if(getMaxTestNummer() != null) {
+                testnr = getMaxTestNummer().intValue();
+                testnr++;
+            }
             t.setTestnr(new BigDecimal(testnr));
         } else {
-            em.remove(t);
+            List<Contacten> l = getNauweContacten(burger);
+            for(int i = 0; i< l.size(); i++){
+                l.get(i).getContact().setRisicostatus(getStatus("Positief"));
+            }
+            em.remove(getTestByID(t.getTestnr().toPlainString()));
             em.flush();
         }
         em.persist(t);
@@ -104,7 +118,7 @@ public class Db_bean implements Db_beanLocal {
 
     @Override
     public BigDecimal getMaxTestNummer() {
-        return (BigDecimal) em.createQuery("SELECT max(testnr) FROM Test t").getSingleResult();
+        return (BigDecimal) em.createQuery("SELECT max(t.testnr) FROM Test t").getSingleResult();
     }
 
     @Override

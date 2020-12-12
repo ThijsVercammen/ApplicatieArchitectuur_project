@@ -92,6 +92,21 @@ public class Controller extends HttpServlet {
             request.setAttribute("burger", db.getTestByID(test_id).getGebruiker().getNaam());
             request.setAttribute("status", status);
             gotoPage("arts/status_confirmation.jsp", request, response);
+        } else if (action.equals("Bevestig")) {
+            String test_id = request.getParameter("test_id");
+            String status = request.getParameter("status");
+            String burger = request.getParameter("burger");
+            Test t = db.getTestByID(test_id);
+            t.setStatus(db.getStatus(status));
+            db.updateTest(t, burger);
+            gotoPage("arts/arts_overview.jsp", request, response);
+        } else if (action.equals("Anuleer")) {
+            gotoPage("arts/arts_overview.jsp", request, response);
+        } else if (action.equals("Afmelden")) {
+            request.getSession().invalidate();
+            gotoPage("index.jsp", request, response);
+        } else {
+            gotoPage("index.jsp", request, response);
         }
 
     }

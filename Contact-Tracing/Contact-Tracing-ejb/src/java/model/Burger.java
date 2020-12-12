@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -53,8 +54,8 @@ public class Burger implements Serializable {
     @JoinColumn(name = "RISICOSTATUS", referencedColumnName = "STATUSNR")
     @ManyToOne
     private Status risicostatus;
-    @OneToMany(mappedBy = "gebruiker")
-    private List<Test> testList;
+    @OneToOne(mappedBy = "gebruiker")
+    private Test test;
     @OneToMany(mappedBy = "contact")
     private List<Contacten> contactenList;
     @OneToMany(mappedBy = "burgernr")
@@ -100,12 +101,12 @@ public class Burger implements Serializable {
     }
 
     @XmlTransient
-    public List<Test> getTestList() {
-        return testList;
+    public Test getTest() {
+        return test;
     }
 
-    public void setTestList(List<Test> testList) {
-        this.testList = testList;
+    public void setTest(Test test) {
+        this.test = test;
     }
 
     @XmlTransient

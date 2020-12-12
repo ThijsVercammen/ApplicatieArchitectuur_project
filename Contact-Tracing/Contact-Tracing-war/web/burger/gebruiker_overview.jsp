@@ -24,5 +24,9 @@
         </form>
         <h2>Besmettings risico</h2>
         <!--p>uw huidig besmettingsrisico is: ${sessionScope.burger.risicostatus.naam}</p-->
+        <br>
+        <form action="/Contact-Tracing-war/Controller" method="POST">
+            <input type="submit" name="submit" value="Afmelden">
+        </form>
     </body>
 </html>

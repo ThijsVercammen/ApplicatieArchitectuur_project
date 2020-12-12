@@ -24,7 +24,11 @@
                 <option value="Negatief">Negatief</option>
             </select>
             <br>
-            <input type="submit" name="submit" value="Voeg test Toe">
+            <input type="submit" name="submit" value="Voeg test toe">
+        </form>
+        <br>
+        <form action="/Contact-Tracing-war/Controller" method="POST">
+            <input type="submit" name="submit" value="Afmelden">
         </form>
     </body>
 </html>
