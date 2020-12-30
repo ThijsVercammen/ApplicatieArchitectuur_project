@@ -36,4 +36,6 @@ public interface Db_beanLocal {
     public List<Contacten> getGewoneContacten(String burger);
     public List<Contacten> getVeiligeContacten(String burger);
     public Test getTestByID(String id);
+    public void updateTestPos(Test t, String burger);
+    public void setNotice(int type, String burger);
 }

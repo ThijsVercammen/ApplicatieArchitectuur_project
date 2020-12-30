@@ -6,6 +6,7 @@
 package session_beans;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -95,6 +96,7 @@ public class Db_bean implements Db_beanLocal {
     @Override
     public void updateTest(Test t, String burger) {
         if(t.getGebruiker() == null){
+            //Nieuwe test wordt aangemaakt
             t.setGebruiker(getBurger(burger));
             int testnr = 1;
             if(getMaxTestNummer() != null) {
@@ -103,14 +105,38 @@ public class Db_bean implements Db_beanLocal {
             }
             t.setTestnr(new BigDecimal(testnr));
         } else {
-            List<Contacten> l = getNauweContacten(burger);
-            for(int i = 0; i< l.size(); i++){
-                l.get(i).getContact().setRisicostatus(getStatus("Positief"));
-            }
+            //Negatief resultaat ingeven bij burger
+            Burger b = getBurger(burger);
+            b.setRisicostatus(getStatus("Negatief"));
             em.remove(getTestByID(t.getTestnr().toPlainString()));
             em.flush();
         }
         em.persist(t);
+    }
+    
+    @Override
+    public void updateTestPos(Test t, String burger) {
+        //Positieve test: Nauwe en gewone contacten aanpassen
+        Burger b = getBurger(burger);
+        b.setRisicostatus(getStatus("Positief"));
+        List<Contacten> l = getNauweContacten(burger);
+        for(int i = 0; i< l.size(); i++){
+            if(l.get(i).getContact().getRisicostatus().getNaam().equals("Negatief")) {
+               setNotice(2, l.get(i).getContact().getNaam()); 
+            }
+            l.get(i).getContact().setRisicostatus(getStatus("Positief"));
+        }
+        l = getGewoneContacten(burger);
+        for(int i = 0; i< l.size(); i++){
+            if(l.get(i).getContact().getRisicostatus().getNaam().equals("Negatief")) {
+               setNotice(2, l.get(i).getContact().getNaam()); 
+            }  
+            l.get(i).getContact().setRisicostatus(getStatus("Positief"));
+        }
+        em.remove(getTestByID(t.getTestnr().toPlainString()));
+        em.flush();
+        em.persist(t);
+        em.persist(b);
     }
 
     @Override
@@ -158,4 +184,12 @@ public class Db_bean implements Db_beanLocal {
                 }
          
     }
+    
+    @Override 
+    public void setNotice(int type, String burger) {
+        Burger b = getBurger(burger);
+        b.setNotice(BigInteger.valueOf(type));
+        em.persist(b);
+    }
+
 }

@@ -43,7 +43,7 @@ public class Controller extends HttpServlet {
                 {
                     String username = request.getRemoteUser();
                     System.out.println("---------------- " + username + "\n");
-                    response.sendRedirect("burger/gebruiker_overview.jsp");
+                    response.sendRedirect("burger/redirect.jsp");
                     break;
                 }
             case "Arts":
@@ -123,8 +123,18 @@ public class Controller extends HttpServlet {
                     String status = request.getParameter("status");
                     String burger = request.getParameter("burger");
                     Test t = db.getTestByID(test_id);
+                    //Status test aanpassen met resultaat
                     t.setStatus(db.getStatus(status));
-                    db.updateTest(t, burger);
+                    if ("Positief".equals(status)) {
+                        //Test is positief
+                        db.updateTestPos(t, burger);
+                    }
+                    else {
+                        //Test was negatief
+                       db.updateTest(t, burger); 
+                    }
+                    //Notice toevoegen: resultaat beschikbaar
+                    db.setNotice(1, burger);
                     gotoPage("arts/arts_overview.jsp", request, response);
                     break;
                 }
@@ -134,6 +144,17 @@ public class Controller extends HttpServlet {
             case "Afmelden":
                 request.getSession().invalidate();
                 gotoPage("index.jsp", request, response);
+                break;
+            case "Doorgaan":
+                String burger = request.getRemoteUser();
+                request.getSession().setAttribute("notice", db.getBurger(burger).getNotice().intValue());
+                request.getSession().setAttribute("burger", db.getBurger(burger));
+                gotoPage("burger/gebruiker_overview.jsp", request, response);
+                break;
+            case "[x] Gelezen":
+                db.setNotice(0, request.getRemoteUser());
+                request.getSession().setAttribute("notice", db.getBurger(request.getRemoteUser()).getNotice().intValue());
+                gotoPage("burger/gebruiker_overview.jsp", request, response);
                 break;
             default:
                 gotoPage("index.jsp", request, response);

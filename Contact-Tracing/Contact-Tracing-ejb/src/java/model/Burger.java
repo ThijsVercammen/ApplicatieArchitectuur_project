@@ -7,6 +7,7 @@ package model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -37,6 +38,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Burger.findByNaam", query = "SELECT b FROM Burger b WHERE b.naam = :naam")
     , @NamedQuery(name = "Burger.findByWachtwoord", query = "SELECT b FROM Burger b WHERE b.wachtwoord = :wachtwoord")})
 public class Burger implements Serializable {
+
+    @Column(name = "NOTICE")
+    private BigInteger notice;
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -150,6 +154,14 @@ public class Burger implements Serializable {
     @Override
     public String toString() {
         return "model.Burger[ burgernr=" + burgernr + " ]";
+    }
+
+    public BigInteger getNotice() {
+        return notice;
+    }
+
+    public void setNotice(BigInteger notice) {
+        this.notice = notice;
     }
     
 }

@@ -46,3 +46,4 @@ nbdist/
 .nb-gradle/
 Contact-Tracing/setup/glassfish-resources.xml
 Contact-Tracing/nbproject/project.properties
+Contact-Tracing/setup/glassfish-resources.xml

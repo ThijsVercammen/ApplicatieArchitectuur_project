@@ -17,7 +17,7 @@
         <h2>Huidig Risico: ${sessionScope.risico}</h2>
         <c:if test="${sessionScope.risico == 'ROOD'}">
             <form action="/Contact-Tracing-war/Controller" method="POST">
-                <input type="submit" name="submit" value="niewe test">
+                <input type="submit" name="submit" value="nieuwe test">
                 <br>
             </form>
         </c:if>

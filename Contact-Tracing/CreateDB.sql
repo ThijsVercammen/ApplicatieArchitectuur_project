@@ -27,6 +27,7 @@ create table Burger (
     naam varchar(255),
     wachtwoord varchar(255),
     risicostatus int,
+    notice int,
     PRIMARY KEY(burgernr),
     FOREIGN KEY (risicostatus) REFERENCES Status(statusnr)
 );
@@ -61,9 +62,9 @@ insert into Status values (1, 'In uitvoering');
 insert into Status values (2, 'Positief');
 insert into Status values (3, 'Negatief');
 
-insert into Burger values (1, 'John Doe', 'admin', 3);
-insert into Burger values (2, 'Arno Goyvaerts', 'admin', 3);
-insert into Burger values (3, 'Thijs Vercammen', 'admin', 3);
+insert into Burger values (1, 'John Doe', 'admin', 3, 0);
+insert into Burger values (2, 'Arno Goyvaerts', 'admin', 3, 0);
+insert into Burger values (3, 'Thijs Vercammen', 'admin', 3, 0);
 
 insert into Arts values (1, 'Herman Crauwels', 'admin');
 
