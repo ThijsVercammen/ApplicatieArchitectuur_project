@@ -38,75 +38,106 @@ public class Controller extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         String action = request.getParameter("submit");
-        if (action.equals("Burger")) {
-            String username = request.getRemoteUser();
-            System.out.println("---------------- " + username + "\n");
-            response.sendRedirect("burger/gebruiker_overview.jsp");
-        } else if (action.equals("Arts")) {
-            response.sendRedirect("arts/arts_overview.jsp");
-        } else if (action.equals("nieuw contact")) {
-            String username = request.getRemoteUser();
-            request.getSession().setAttribute("burgers", db.getAllBurgers(username));
-            gotoPage("burger/nieuw_contact.jsp", request, response);
-        } else if (action.equals("niewe test")) {
-            String username = request.getRemoteUser();
-            Test t = db.getTest(username);
-            if (t != null) {
-                request.getSession().setAttribute("testStatus", t.getStatus().getNaam());
-                request.getSession().setAttribute("test", t);
-            } else {
-                request.setAttribute("testStatus", "Nog geen test uitgevoerd");
-            }
-            gotoPage("burger/test_aanvragen.jsp", request, response);
-        } else if (action.equals("Voeg contact toe")) {
-            String username = request.getRemoteUser();
-            String contact = request.getParameter("contact");
-            String soort = request.getParameter("soort_contact");
-            db.addContact(username, contact, soort);
-            gotoPage("burger/gebruiker_overview.jsp", request, response);
-        } else if (action.equals("Huidig risico")) {
-            String username = request.getRemoteUser();
-            request.getSession().setAttribute("nauw", db.getNauweContacten(username));
-            request.getSession().setAttribute("gewoon", db.getGewoneContacten(username));
-            request.getSession().setAttribute("veilig", db.getVeiligeContacten(username));
-            request.getSession().setAttribute("aantnauw", db.getNauweContacten(username).size());
-            request.getSession().setAttribute("aantgewoon", db.getGewoneContacten(username).size());
-            request.getSession().setAttribute("aantveilig", db.getVeiligeContacten(username).size());
-            request.getSession().setAttribute("risico", db.getRisicoStatus(username));
-            gotoPage("burger/risico.jsp", request, response);
-        } else if (action.equals("Test Aanvragen")) {
-            String username = request.getRemoteUser();
-            Test t = db.getTest(username);
-            if (t == null) {
-                t = new Test();
-            }
-            t.setStatus(db.getStatus("In uitvoering"));
-            db.updateTest(t, username);
-            gotoPage("burger/gebruiker_overview.jsp", request, response);
-        } else if (action.equals("Overzicht")) {
-            response.sendRedirect("burger/gebruiker_overview.jsp");
-        } else if (action.equals("Voeg test toe")) {
-            String test_id = request.getParameter("test_id");
-            String status = request.getParameter("status");
-            request.setAttribute("test_id", test_id);
-            request.setAttribute("burger", db.getTestByID(test_id).getGebruiker().getNaam());
-            request.setAttribute("status", status);
-            gotoPage("arts/status_confirmation.jsp", request, response);
-        } else if (action.equals("Bevestig")) {
-            String test_id = request.getParameter("test_id");
-            String status = request.getParameter("status");
-            String burger = request.getParameter("burger");
-            Test t = db.getTestByID(test_id);
-            t.setStatus(db.getStatus(status));
-            db.updateTest(t, burger);
-            gotoPage("arts/arts_overview.jsp", request, response);
-        } else if (action.equals("Anuleer")) {
-            gotoPage("arts/arts_overview.jsp", request, response);
-        } else if (action.equals("Afmelden")) {
-            request.getSession().invalidate();
-            gotoPage("index.jsp", request, response);
-        } else {
-            gotoPage("index.jsp", request, response);
+        switch (action) {
+            case "Burger":
+                {
+                    String username = request.getRemoteUser();
+                    System.out.println("---------------- " + username + "\n");
+                    response.sendRedirect("burger/gebruiker_overview.jsp");
+                    break;
+                }
+            case "Arts":
+                response.sendRedirect("arts/arts_overview.jsp");
+                break;
+            case "nieuw contact":
+                {
+                    String username = request.getRemoteUser();
+                    request.getSession().setAttribute("burgers", db.getAllBurgers(username));
+                    gotoPage("burger/nieuw_contact.jsp", request, response);
+                    break;
+                }
+            case "nieuwe test":
+                {
+                    String username = request.getRemoteUser();
+                    Test t = db.getTest(username);
+                    if (t != null) {
+                        request.getSession().setAttribute("testStatus", t.getStatus().getNaam());
+                        request.getSession().setAttribute("test", t);
+                    } else {
+                        request.setAttribute("testStatus", "Nog geen test uitgevoerd");
+                    }       
+                    gotoPage("burger/test_aanvragen.jsp", request, response);
+                    break;
+                }
+            case "Voeg contact toe":
+                {
+                    String username = request.getRemoteUser();
+                    String contact = request.getParameter("contact");
+                    String soort = request.getParameter("soort_contact");
+                    db.addContact(username, contact, soort);
+                    gotoPage("burger/gebruiker_overview.jsp", request, response);
+                    break;
+                }
+            case "Huidig risico":
+                {
+                    String username = request.getRemoteUser();
+                    request.getSession().setAttribute("nauw", db.getNauweContacten(username));
+                    request.getSession().setAttribute("gewoon", db.getGewoneContacten(username));
+                    request.getSession().setAttribute("veilig", db.getVeiligeContacten(username));
+                    request.getSession().setAttribute("aantnauw", db.getNauweContacten(username).size());
+                    request.getSession().setAttribute("aantgewoon", db.getGewoneContacten(username).size());
+                    request.getSession().setAttribute("aantveilig", db.getVeiligeContacten(username).size());
+                    request.getSession().setAttribute("risico", db.getRisicoStatus(username));
+                    gotoPage("burger/risico.jsp", request, response);
+                    break;
+                }
+            case "Test Aanvragen":
+                {
+                    String username = request.getRemoteUser();
+                    Test t = new Test();     
+                    t.setStatus(db.getStatus("In uitvoering"));
+                    db.updateTest(t, username);
+                    gotoPage("burger/gebruiker_overview.jsp", request, response);
+                    break;
+                }
+            case "Overzicht":
+                response.sendRedirect("burger/gebruiker_overview.jsp");
+                break;
+            case "Voeg test toe":
+                {
+                    String test_id = request.getParameter("test_id");
+                    String status = request.getParameter("status");
+                    Test burger = db.getTestByID(test_id);
+                    if(burger == null) {
+                        gotoPage("arts/arts_overview.jsp", request, response);
+                    }else {
+                        request.setAttribute("test_id", test_id);
+                        request.setAttribute("burger", burger.getGebruiker().getNaam());
+                        request.setAttribute("status", status);
+                        gotoPage("arts/status_confirmation.jsp", request, response);
+                    }       break;
+                }
+            case "Bevestig":
+                {
+                    String test_id = request.getParameter("test_id");
+                    String status = request.getParameter("status");
+                    String burger = request.getParameter("burger");
+                    Test t = db.getTestByID(test_id);
+                    t.setStatus(db.getStatus(status));
+                    db.updateTest(t, burger);
+                    gotoPage("arts/arts_overview.jsp", request, response);
+                    break;
+                }
+            case "Annuleer":
+                gotoPage("arts/arts_overview.jsp", request, response);
+                break;
+            case "Afmelden":
+                request.getSession().invalidate();
+                gotoPage("index.jsp", request, response);
+                break;
+            default:
+                gotoPage("index.jsp", request, response);
+                break;
         }
 
     }

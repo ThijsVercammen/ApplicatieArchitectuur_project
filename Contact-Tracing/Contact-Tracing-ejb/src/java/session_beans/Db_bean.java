@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import model.Arts;
 import model.Burger;
@@ -84,8 +85,9 @@ public class Db_bean implements Db_beanLocal {
 
     @Override
     public Test getTest(String burger) {
-        if((em.createQuery("SELECT t FROM Test t WHERE t.gebruiker = ?1").setParameter(1, getBurger(burger)).getResultList()).size() > 0){
-            return (Test) em.createQuery("SELECT t FROM Test t WHERE t.gebruiker = ?1").setParameter(1, getBurger(burger)).getSingleResult();
+        BigDecimal testnum = (BigDecimal) em.createQuery("SELECT max(t.testnr) FROM Test t WHERE t.gebruiker = ?1").setParameter(1, getBurger(burger)).getSingleResult();
+        if((em.createQuery("SELECT t FROM Test t WHERE t.gebruiker = ?1 and t.testnr = ?2").setParameter(1, getBurger(burger)).setParameter(2, testnum).getResultList()).size() > 0){
+            return (Test) em.createQuery("SELECT t FROM Test t WHERE t.gebruiker = ?1 and t.testnr = ?2").setParameter(1, getBurger(burger)).setParameter(2, testnum).getSingleResult();
         }
         return null;
     }
@@ -147,6 +149,13 @@ public class Db_bean implements Db_beanLocal {
 
     @Override
     public Test getTestByID(String id) {
-         return (Test) em.createNamedQuery("Test.findByTestnr").setParameter("testnr", new BigDecimal(id)).getSingleResult();
+        try
+        {
+            return (Test) em.createNamedQuery("Test.findByTestnr").setParameter("testnr", new BigDecimal(id)).getSingleResult();
+        }catch (NoResultException e)
+                {
+                    return null;
+                }
+         
     }
 }

@@ -18,11 +18,11 @@
         <form action="/Contact-Tracing-war/Controller" method="POST">
             <input type="submit" name="submit" value="nieuw contact">
             <br>
-            <input type="submit" name="submit" value="niewe test">
+            <input type="submit" name="submit" value="nieuwe test">
             <br>
             <input type="submit" name="submit" value="Huidig risico">
         </form>
-        <h2>Besmettings risico</h2>
+        <h2>Besmettingsrisico</h2>
         <!--p>uw huidig besmettingsrisico is: ${sessionScope.burger.risicostatus.naam}</p-->
         <br>
         <form action="/Contact-Tracing-war/Controller" method="POST">

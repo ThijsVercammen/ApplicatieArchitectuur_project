@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Resultaat Test Bevestigen</title>
     </head>
     <body>
         <h1>Bevestig Status.</h1>
@@ -21,7 +21,7 @@
             <input type="hidden" name="burger" value="${requestScope.burger}" hidden>
             <input type="hidden" name="status" value="${requestScope.status}" hidden>
             <input type="hidden" name="test_id" value="${requestScope.test_id}" hidden>
-            <input type="submit" name="submit" value="Anuleer">
+            <input type="submit" name="submit" value="Annuleer">
             <input type="submit" name="submit" value="Bevestig">
         </form>
     </body>
