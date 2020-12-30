@@ -10,17 +10,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Huidig Risico</title>
+        <title>Overzicht Contacten</title>
     </head>
     <body>
-        <h1>Risico Pagina</h1>
-        <h2>Huidig Risico: ${sessionScope.risico}</h2>
-        <c:if test="${sessionScope.risico == 'ROOD'}">
-            <form action="/Contact-Tracing-war/Controller" method="POST">
-                <input type="submit" name="submit" value="nieuwe test">
-                <br>
-            </form>
-        </c:if>
+        <h1>Overzicht contacten</h1>
         <h3>Nauwe Contacten: ${sessionScope.aantnauw}</h3>
         <table>
             <tr>

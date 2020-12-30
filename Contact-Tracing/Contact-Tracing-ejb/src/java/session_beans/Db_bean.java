@@ -95,6 +95,7 @@ public class Db_bean implements Db_beanLocal {
 
     @Override
     public void updateTest(Test t, String burger) {
+        Burger b = getBurger(burger);
         if(t.getGebruiker() == null){
             //Nieuwe test wordt aangemaakt
             t.setGebruiker(getBurger(burger));
@@ -104,14 +105,15 @@ public class Db_bean implements Db_beanLocal {
                 testnr++;
             }
             t.setTestnr(new BigDecimal(testnr));
+            b.setRisicostatus(getStatus("In uitvoering"));
         } else {
             //Negatief resultaat ingeven bij burger
-            Burger b = getBurger(burger);
             b.setRisicostatus(getStatus("Negatief"));
             em.remove(getTestByID(t.getTestnr().toPlainString()));
             em.flush();
         }
         em.persist(t);
+        em.persist(b);
     }
     
     @Override

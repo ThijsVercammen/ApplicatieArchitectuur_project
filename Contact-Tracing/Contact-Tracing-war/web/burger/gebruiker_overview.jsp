@@ -41,23 +41,27 @@
             <br>
             <input type="submit" name="submit" value="nieuwe test">
             <br>
-            <input type="submit" name="submit" value="Huidig risico">
+            <input type="submit" name="submit" value="Overzicht contacten">
         </form>
         <h2>Besmettingsrisico</h2>
         <c:choose>
             <c:when test = "${sessionScope.burger.risicostatus.naam == 'Positief'}">
                 <div style="background-color: #990033; width: 20%; color: white; padding: 20px; font-size: 20px; border-radius: 20px; text-align: center">
-                    HOOG
+                    <b>HOOG</b><br><br>
+                    Vraag zo snel mogelijk een test aan om jouw omgeving te beschermen!<br>
+                    <form action="/Contact-Tracing-war/Controller" method="POST">
+                        <input style='font-size: 20px' type="submit" name="submit" value="Test Aanvragen">
+                    </form>
                 </div>
             </c:when>
             <c:when test = "${sessionScope.burger.risicostatus.naam == 'Negatief'}">
                 <div style="background-color: green; width: 20%; color: white; padding: 20px; font-size: 20px; border-radius: 20px; text-align: center">
-                    LAAG
+                    <b>LAAG</b>
                 </div>
             </c:when>
             <c:otherwise>
-                <div style="background-color: #ff9900; width: 20%; color: black; padding: 20px; font-size: 20px; border-radius: 20px; text-align: center">
-                    In uitvoering
+                <div style="background-color: #ff9900; width: 20%; color: white; padding: 20px; font-size: 20px; border-radius: 20px; text-align: center">
+                    <b>In uitvoering</b>
                 </div>
             </c:otherwise>
         </c:choose>

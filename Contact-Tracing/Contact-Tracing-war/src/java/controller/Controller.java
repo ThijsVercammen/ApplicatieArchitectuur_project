@@ -78,7 +78,7 @@ public class Controller extends HttpServlet {
                     gotoPage("burger/gebruiker_overview.jsp", request, response);
                     break;
                 }
-            case "Huidig risico":
+            case "Overzicht contacten":
                 {
                     String username = request.getRemoteUser();
                     request.getSession().setAttribute("nauw", db.getNauweContacten(username));
@@ -97,10 +97,13 @@ public class Controller extends HttpServlet {
                     Test t = new Test();     
                     t.setStatus(db.getStatus("In uitvoering"));
                     db.updateTest(t, username);
-                    gotoPage("burger/gebruiker_overview.jsp", request, response);
+                    request.getSession().setAttribute("testStatus", t.getStatus().getNaam());
+                    request.getSession().setAttribute("test", t);
+                    gotoPage("burger/test_aanvragen.jsp", request, response);
                     break;
                 }
             case "Overzicht":
+                request.getSession().setAttribute("burger", db.getBurger(request.getRemoteUser()));
                 response.sendRedirect("burger/gebruiker_overview.jsp");
                 break;
             case "Voeg test toe":
