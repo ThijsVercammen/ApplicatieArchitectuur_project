@@ -3,22 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package contact.tracing.client;
+package contacttracingclient;
 
 import javax.ejb.EJB;
 import SwingBeans.SwingBeanRemote;
-
 /**
  *
  * @author arnog
  */
 public class Main {
     @EJB private static SwingBeanRemote db;
-    
-    public static void main(String[] args)
-    {
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
         if (db==null)
             System.out.println("Das hier gewoon al null seg.");
         Rapportering r = new Rapportering(db);
     }
+    
 }

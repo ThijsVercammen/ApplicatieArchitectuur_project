@@ -13,5 +13,9 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface SwingBeanRemote{
-
+    public int countBurger();
+    public int countTest();
+    public int countNauw();
+    public int countGewoon();
+    public int countVeilig();
 }
