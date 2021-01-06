@@ -45,6 +45,13 @@ public class Db_bean implements Db_beanLocal {
 
     @Override
     public void addContact(String burger, String contact, String type) {
+        if(getContactPair(burger, contact).size() > 0){
+            System.out.println("Die bestaan al zene!");
+            Contacten c = (Contacten) em.createNamedQuery("Contacten.findByBurger").setParameter("burgernr", getBurger(burger)).getSingleResult();
+            c.setSoortContact(type);
+            c = (Contacten) em.createNamedQuery("Contacten.findByBurger").setParameter("burgernr", getBurger(contact)).getSingleResult();
+            c.setSoortContact(type);
+        }else {
         Contacten c = new Contacten();
         Contacten c2 = new Contacten();
         c.setBurgernr(getBurger(burger));
@@ -63,12 +70,17 @@ public class Db_bean implements Db_beanLocal {
         c2.setSoortContact(type);
         em.persist(c);
         em.persist(c2);
-        //contactnr++;
+        }
     }
 
     @Override
     public List<Contacten> getContacten(String burger) {
         return em.createQuery("SELECT c FROM Contacten c WHERE c.burgernr = ?1").setParameter(1, getBurger(burger)).getResultList();
+    }
+    
+    @Override
+    public List<Contacten> getContactPair(String burger, String contact) {
+        return em.createQuery("SELECT c FROM Contacten c WHERE c.burgernr = ?1 AND c.contact = ?2").setParameter(1, getBurger(burger)).setParameter(2, getBurger(contact)).getResultList();
     }
 
     @Override

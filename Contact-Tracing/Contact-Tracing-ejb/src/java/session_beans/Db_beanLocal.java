@@ -38,4 +38,5 @@ public interface Db_beanLocal {
     public Test getTestByID(String id);
     public void updateTestPos(Test t, String burger);
     public void setNotice(int type, String burger);
+    public List<Contacten> getContactPair(String burger, String contact);
 }
