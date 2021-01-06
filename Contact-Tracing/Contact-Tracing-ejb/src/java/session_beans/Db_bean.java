@@ -46,7 +46,6 @@ public class Db_bean implements Db_beanLocal {
     @Override
     public void addContact(String burger, String contact, String type) {
         if(getContactPair(burger, contact).size() > 0){
-            System.out.println("Die bestaan al zene!");
             Contacten c = (Contacten) em.createNamedQuery("Contacten.findByBurger").setParameter("burgernr", getBurger(burger)).getSingleResult();
             c.setSoortContact(type);
             c = (Contacten) em.createNamedQuery("Contacten.findByBurger").setParameter("burgernr", getBurger(contact)).getSingleResult();
