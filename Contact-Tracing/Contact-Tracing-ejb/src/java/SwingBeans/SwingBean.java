@@ -58,7 +58,7 @@ public class SwingBean implements SwingBeanRemote {
     public int countGewoon() {
         int aant = 0;
         try{
-            aant = (int) em.createNamedQuery("Contacten.findBySoortContact").setParameter("soortContact", "gewoon contact").getResultList().size();
+            aant = (int) em.createNamedQuery("Contacten.findBySoortContact").setParameter("soortContact", "Gewoon contact").getResultList().size();
         } catch(Exception e) {
             
         }
@@ -69,7 +69,7 @@ public class SwingBean implements SwingBeanRemote {
     public int countVeilig() {
         int aant = 0;
         try{
-            aant = (int) em.createNamedQuery("Contacten.findBySoortContact").setParameter("soortContact", "veilig contact").getResultList().size();
+            aant = (int) em.createNamedQuery("Contacten.findBySoortContact").setParameter("soortContact", "Veilig contact").getResultList().size();
         } catch(Exception e) {
             
         }
