@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,7 +14,9 @@
     </head>
     <body>
         <h1>Arts Overview</h1>
-
+        <c:if test="${requestScope.error != null}">
+            <p style="color: red;">${requestScope.error}</p>
+        </c:if>
         <form method="POST" action="/Contact-Tracing-war/Controller">
             <label>Test ID:</label>
             <input name="test_id" type="number">

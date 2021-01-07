@@ -42,7 +42,6 @@ public class Controller extends HttpServlet {
             case "Burger":
                 {
                     String username = request.getRemoteUser();
-                    System.out.println("---------------- " + username + "\n");
                     response.sendRedirect("burger/redirect.jsp");
                     break;
                 }
@@ -112,13 +111,18 @@ public class Controller extends HttpServlet {
                     String status = request.getParameter("status");
                     Test burger = db.getTestByID(test_id);
                     if(burger == null) {
+                        request.setAttribute("error", "Er bestaat geen test voor dit ID.");
+                        gotoPage("arts/arts_overview.jsp", request, response);
+                    } else if(!burger.getStatus().getNaam().equals("In uitvoering")){
+                        request.setAttribute("error", "Deze test heeft reeds een resultaat, u kan dit niet meer wijzigen.");
                         gotoPage("arts/arts_overview.jsp", request, response);
                     }else {
                         request.setAttribute("test_id", test_id);
                         request.setAttribute("burger", burger.getGebruiker().getNaam());
                         request.setAttribute("status", status);
                         gotoPage("arts/status_confirmation.jsp", request, response);
-                    }       break;
+                    }       
+                    break;
                 }
             case "Bevestig":
                 {

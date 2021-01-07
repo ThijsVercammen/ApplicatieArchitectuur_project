@@ -13,5 +13,9 @@
     </head>
     <body>
         <h1>Login Error Page</h1>
+        <p>Kan niet inloggen met gegeven gebruikersnaam en wachtwoord.</p>
+        <form action="/Contact-Tracing-war/Controller" method="POST">
+            <input type="submit" name="submit" value="Terug naar startpagina">
+        </form>
     </body>
 </html>
